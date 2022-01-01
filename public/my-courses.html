@@ -1,0 +1,71 @@
+﻿
+<!DOCTYPE html>
+
+<html lang="sv" data-ng-app="myCoursesApp"  class="ng-scope" data-ng-controller="MyCoursesController">
+
+<head>
+
+    <title>
+        DT190G - Laboration 1: ({{ rabi2000 }})
+    </title>
+    <meta charset="utf-8" />
+
+ 
+    <link rel="stylesheet" href="my-courses.css" type="text/css" />
+
+
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    
+
+    <script src="my-courses.controller.js"></script>
+</head>
+
+<body>
+    <header>
+        <h1>Mina kurser</h1>    
+        <p>Detta är mina kurser:</p>
+        
+    </header>
+
+    <main>
+        <section class="add">
+            <form>
+                <label>Kurskod: <input data-ng-disabled="random" data-ng-model="courseCode" /></label> 
+                <label>status: <input data-ng-disabled="random" data-ng-model="status" /></label> 
+                <span class="button add" data-ng-click="addMyCourse()" >lägg till</span> <!-- anropar metoden i $scope.addMyCourse -->
+            </form>
+        </section>
+
+        <section class="myCourses">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Kurskod</td>
+                        <td>Namn</td>
+                        <td>Status</td>
+                    </tr>
+                </thead>
+
+                    <tbody>
+                    <tr  data-ng-repeat="course in myCourses | filter:filterQuery | orderBy: 'courseCode'">
+                        <td>{{ course.courseCode }}</td>
+                        <td>{{ course.subject }}</td> 
+                        
+                        <td><input id="checkbox-{{course.status}}" type="checkbox" data-ng-model="course.status"
+                            data-ng-true-value =1 data-ng-false-value = 0 ></td>
+                                
+                            <td class="button edit center" data-ng-click="editMyCourse(myCourses.courseCode)">radera</td>
+                            <td class="button delete center" data-ng-click="deletemyCourse(myCourses.courseCode)">uppdetera</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer class="center">
+            <a href="index.html">Alla kurser</a>
+    </footer>
+</body>
+
+</html>

@@ -1,0 +1,104 @@
+﻿<!-- Sektion 0, Intro - för kursen JavaScriptbaserad webbutveckling -->
+<!DOCTYPE html>
+
+
+<html lang="sv"  >
+
+<head>
+   
+    <title>
+        DT190G - Laboration 0: Intro ({{ rabi2000 }})
+    </title>
+    <meta charset="utf-8" />
+
+    <!-- CSS -->
+    <link rel="stylesheet" href="my-courses.css" type="text/css" />
+
+    
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    
+    <!-- En "controller" innehåller den kod som vår vy använder.-->
+    <script src="courses.controller.js"></script>
+    
+</head>
+
+<body data-ng-app="CoursesApp"  data-ng-controller="CoursesController" >
+    <header>
+       
+        <h1 class="center" ></h1>
+        <h2> Mittuniversitetets kursutbud</h2>
+       
+
+
+        <!-- Ett annat sätt att "binda" data från $scope är som sagt att använda {{ }} -->
+    
+        <p>Följande kurser finns att läsa hos oss:</p>
+
+
+        <nav>
+            <a href="my-courses.html">Se mina kurser</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="filter">
+            <form>
+                <!-- Ytterligare sätt att "binda" data är att använda direktivet (data-)ng-model (en "two-way binding)").
+                    Denna används på ett input-, select- eller textarea-element till $scope i vår controller. I det här
+                    fallet skapas $scope.filterQuery. Så snart användaren skriver i textfältet uppdateras värdet av 
+                    variabeln filterQuery med det värde som textfältet har. filterQuery används senare i koden för att
+                    avgöra vilka kurser som ska visas i tabellen. -->
+                <label>Filtrera på:&nbsp;<input data-ng-model="filterQuery" class="form-control pull-right"
+                        placeholder="Filter..." /></label>
+            </form>
+        </section>
+
+        <section class="courses">
+            <table>
+                <thead>
+                    <tr>
+                        <td>Kurskod</td>
+                        <td>subjektkod</td>
+                        <td>nivå</td>
+                        <td>progression</td>                        
+                        <td>Namn</td>
+                        <td>points</td>
+                        <td>Institution</td>
+                        <td>subjektnamn</td>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Direktivet (data-)ng-repeat använder vi om vi vill "loopa" igenom en array eller objekt.
+                        Nedan kommer en rad i tabellen läggas till för varje kurs som finns i $scope.courses i vår
+                        controller. AngularJS tillhandahåller olika filter för att omvandla data åt oss. Vi lägger
+                        till ett filter genom att använda pipe-tecknet | följt av det filter som ska användas. Ett
+                        filter är 'filter' som väljer ut en delmängd från en array (i det här fallet $scope.courses)
+                        som matchar det vi anger i filterQuery (som får sitt värde av textfältet).
+                    -->
+
+                    <!-- För varje course i courses, applicera filtret och sortera efter kursens kurskod. -->
+                    <tr data-ng-repeat="course in courses | filter:filterQuery | orderBy: 'courseCode'">
+                        <td>{{ course.courseCode }}</td>
+                        <td>{{ course.subjectCode }}</td>
+                        <td>{{ course.level }}</td>
+                        <td>{{ course.progression }}</td>                        
+                        <td>{{ course.name }}</td>
+                        <td>{{ course.points }}</td>
+                        <td>{{ course.institutionCode }}</td>
+                        <td>{{ course.subject }}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <footer>
+        <p class="center">
+            Denna sida läser data från filen
+            <a href="../miun-db.json" target="_blank">miun-db.json.</a>
+        </p>
+    </footer>
+</body>
+
+</html> 
