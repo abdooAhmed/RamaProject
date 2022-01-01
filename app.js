@@ -34,7 +34,7 @@ app.get('/api/courses', function (req, res) {
     for (let i = 0; i < coursesDb.courses.length; i++) {
         coursesDb.courses[i].subject= getSubjectName(coursesDb.courses[i].subjectCode) ;
         
-      }
+}
     res.status(200).json(coursesDb); // 200 OK
 });
 
@@ -57,7 +57,7 @@ app.post('/api/courses', function (req, res) {
     const points = req.body.points;
     const institutionCode = req.body.institutionCode
 
- 
+
     let course = null;
     //if (!courseCode)
 //  console.log("course is null");   

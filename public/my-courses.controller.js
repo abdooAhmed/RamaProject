@@ -1,7 +1,9 @@
 // AngularJS-kod som vi går igenom mer i detalj i sektion 2 - Angular. 
 // Fokusera på $scope i funktionen successCallBack i den här laborationen.
 
-// Skapar modulen myCoursesApp
+// Skapar modulen myCoursesApc
+
+
 angular.module('myCoursesApp', []) // Läs 1 nedan
     .controller('MyCoursesController', function MyCoursesController($scope, $http) { // Läs 2 nedan 
         // Lägger till variabeln studentId som nu kan nås/användas i html-koden
@@ -17,14 +19,68 @@ angular.module('myCoursesApp', []) // Läs 1 nedan
         $scope.language = '';
 
         $scope.myCourses = null;
+        var MycourseList = new Array();
+        
         $scope.subjects = null;
 
+
+        $scope.courses=null;
+
+
+
+
+        $http.get("/api/courses/").then(
+                function successCallback(response) { // Läs 4 nedan
+            // this callback will be called asynchronously when the response is available
+
+            // För att underlätta användningen av data i response lagrar vi det i en variabel
+           $scope.courses= response.data.courses;
+           
+            
+            // Läs 5 nedan
+           // $scope.myCourses = data.myCourses;
+            
+           // $scope.subjects = data.subjects;
+        },
+            function errorCallback(response) { // Läs 6 nedan
+                // called asynchronously if an error occurs
+                // or server returns response with an error status.
+                console.log("Error reading courses.json! response=" + JSON.stringify(response));
+            } 
+        );
+       
+
+
+        
+
+
+        
 
         $scope.getAllMyCourses = function () {
             $http.get('api/my/courses').then(
                 function successCallback(response) {
+                    
+                    console.log($scope.courses);
                     // this callback will be called asynchronously when the response is available
-                    $scope.myCourses = response.data.myCourses;
+                    const Courses = response.data.myCourses;
+                    
+                    var my = new Object();
+                    for (let mycourse in Courses )
+                    {
+                        for(let course in $scope.courses)
+                        {
+                            if(Courses[mycourse].courseCode == $scope.courses[course].courseCode)
+                            {
+                            my = {courseCode:Courses[mycourse].courseCode,subject:$scope.courses[course].name,status: Courses[mycourse].status};
+                                
+                                MycourseList.push(my);
+                                
+                                
+                            }
+                        }
+                    }
+
+                $scope.myCourses = MycourseList;
                 },
                 function errorCallback(response) {
                     // called asynchronously if an error occurs
@@ -89,7 +145,7 @@ angular.module('myCoursesApp', []) // Läs 1 nedan
                     }
                     );
                 };
-      
+
         
                 $scope.getmyCourse = function (courseCode) {
                     // Call the API
@@ -98,9 +154,7 @@ angular.module('myCoursesApp', []) // Läs 1 nedan
                             // The user was delete
                             // TODO: Notify the user!
                             console.log(`The course: ${JSON.stringify(response.data)}`);
-        
                             // Get all users from API (reload/refresh users)
-                         
                         }
                         ,
                         function errorCallback(response) {
@@ -149,7 +203,7 @@ angular.module('myCoursesApp', []) // Läs 1 nedan
                                 preamble: $scope.preamble,
                                 bodyText: $scope.bodyText,
                                 language: $scope.language,
-                               
+
                 
                             }
                             $http.post('/api/subjects', body).then(
@@ -172,10 +226,13 @@ angular.module('myCoursesApp', []) // Läs 1 nedan
                             };
 
                             $scope.getAllSubjects = function () {
-                                $http.get('api/subjects').then(
+                                $http.get('/api/subjects/').then(
                                     function successCallback(response) {
                                         // this callback will be called asynchronously when the response is available
                                         $scope.subjects = response.data.subjects;
+                                        
+                                        console.log($scope.subjects);
+                                       
                                     },
                                     function errorCallback(response) {
                                         // called asynchronously if an error occurs
@@ -188,7 +245,7 @@ angular.module('myCoursesApp', []) // Läs 1 nedan
 
                             $scope.getsubject = function (subjectCode) {
                                 // Call the API
-                                $http.get('/api/subjects' + subjectCode).then(
+                                $http.get('api/subjects/' + subjectCode).then(
                                     function successCallback(response) {
                                         // The user was delete
                                         // TODO: Notify the user!
@@ -211,9 +268,9 @@ angular.module('myCoursesApp', []) // Läs 1 nedan
 
 
                          // Funktion som utifrån namnet på en html-fil returnerar den rubrik den sidan ska använda.
-
+        $scope.getAllSubjects();
         $scope.getAllMyCourses();
-        $scope.getAllMyCourses();
+        
         
         
     }
