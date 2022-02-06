@@ -1,16 +1,12 @@
 ﻿{
-   "myCourses": [
+    "myCourses": [
     {
       "courseCode": "DT151G",
-      "status": 0},
-      {"courseCode": "DT183G",
       "status": 0},
       {"courseCode": "DT190G",
       "status": 0},
       {"courseCode": "DT182G",
-      "status": 0},
-      {"courseCode": "DT181G",
-      "status": 0},
+      "status": 0},    
       {"courseCode": "DT180G",
       "status": 1},
       {"courseCode": "DT140G",

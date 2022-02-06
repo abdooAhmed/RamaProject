@@ -1,6 +1,8 @@
 const express = require('express');
 const path = require('path');
 const jsonfile = require('jsonfile')
+const bodyParser = require('body-parser')
+const cors = require('cors');
 const app = express();
 const coursesDb = { courses: [], myCourses:[], subjects:[] };
 
@@ -15,8 +17,30 @@ jsonfile.readFile(file, function(err, obj) {
         coursesDb.subjects = obj.subjects;
 
     }
-
+    
 });
+
+//create connection with mongoose
+const mongoose = require('mongoose');
+mongoose.connect("mongodb+srv://dt190g:Rama2022@my-courses.drq6j.mongodb.net/my-courses?retryWrites=true&w=majority",()=>
+console.log('connected to DB!'));
+
+
+app.use(cors());
+const subjectsRoute = require('./routing/subjects');
+app.use(bodyParser.json());
+app.use('/subjects',subjectsRoute);
+
+const coursesRoute = require('./routing/courses');
+app.use('/courses',coursesRoute);
+
+const myCoursesRoute = require('./routing/my-courses');
+app.use('/my-courses',myCoursesRoute);
+
+
+
+
+
 
 
 
